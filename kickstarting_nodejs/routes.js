@@ -3,16 +3,17 @@ const fs = require("fs");
 function requestHandler(req, res) {
   const url = req.url;
   const method = req.method;
-  if (url == "/") {
+  if (url === "/") {
     fs.readFile("message.txt", { encoding: "utf-8" }, (err, data) => {
       if (err) {
         console.log(err);
       }
 
-      console.log("data>>>>>>>>>>>", data);
+      // console.log("data>>>>>>>>>>>", data);
 
       res.write("<html>");
       res.write("<head><title>my page</title></head>");
+      // res.write(`<body>${data}</body>`);
 
       res.write(
         "<body> <form  action='/message' method='POST'><input type='text' name='message'></input><button type='submit'>send</button></from></body>"
@@ -32,9 +33,9 @@ function requestHandler(req, res) {
     return req.on("end", () => {
       const parseBody = Buffer.concat(body).toString();
       console.log("parseBody>>>>>", parseBody);
-      const gg = parseBody.split("=")[1];
-      console.log("gg>>>>>>>>>>.", gg);
-      fs.writeFile("message.txt", gg, (err) => {
+      const message = parseBody.split("=")[1];
+      console.log("message>>>>>>>>>>.", message);
+      fs.writeFile("message.txt", message, (err) => {
         if (err) {
           console.log(err);
         }
