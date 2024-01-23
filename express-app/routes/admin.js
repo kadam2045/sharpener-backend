@@ -1,16 +1,24 @@
 const express = require("express");
 const adminRouter = express.Router();
+const bodyParser = require("body-parser");
+adminRouter.use(bodyParser.urlencoded({ extended: false }));
 
-adminRouter.get("/add-product", (req, res, next) => {
+adminRouter.get("/login", (req, res, next) => {
   res.send(
-    '<form action="/admin/product" method="POST"> <input type="text" name="title"><input type="number" name="count"> <button type="submit">Add Product</button></form>'
+    '<form onsubmit="localStorage.setItem(`username`, document.getElementById(`username`).value)" action="/add-product" method="POST"> <input type="text" id="username" name="username">  <button type="submit">Login </button></form>'
   );
 });
 
-adminRouter.post("/product", (req, res, next) => {
-  console.log("insode product page");
-  console.log(req.body);
-  res.redirect("/shop");
+adminRouter.get("/add-product", (req, res, next) => {
+  res.send(
+    '<form onsubmit=document.getElementById(`username`).value= "localStorage.getItem(`username`)" action="/" method="POST"> <input type="text"  id="message" name="message" placeholder="enter message"> <br /> <input type="hidden" id="username" name="username">  <button type="submit">Add </button></form>'
+  );
+});
+adminRouter.post("/", (req, res, next) => {
+  const username = req.body.username;
+  const message = req.body.message;
+  console.log("username:", username, "message:", message);
+  next();
 });
 
 module.exports = adminRouter;
